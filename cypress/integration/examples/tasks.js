@@ -40,14 +40,28 @@ describe('Tasks API', () => {
       });
   });
 
+  it('Update Tasks', () => {
+    cy.request('GET', '/tasks')
+      .its('body')
+      .each(task => {
+        cy.request('PATCH', `/tasks/${task.id}/status`, {
+          status: 'DONE',
+        }).then(response => {
+          expect(response.body).to.have.property('status', 'DONE');
+        });
+      });
+  });
+
   it('Delete All Tasks', () => {
     cy.request('GET', '/tasks')
       .its('body')
       .each(task => {
-        const taskId = task.id;
-        cy.request('DELETE', `/tasks/${taskId}`).then(response => {
-          cy.log(response);
+        cy.request('DELETE', `/tasks/${task.id}`).then(response => {
+          cy.log('task deleted');
         });
       });
+    cy.request('GET', '/tasks').then(response => {
+      expect(response.body).to.have.lengthOf(0);
+    });
   });
 });
