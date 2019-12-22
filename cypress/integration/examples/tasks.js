@@ -24,6 +24,36 @@ describe('Tasks API', () => {
     });
   });
 
+  it('Update Tasks', () => {
+    cy.request('GET', '/tasks')
+      .its('body')
+      .each(task => {
+        cy.request('PATCH', `/tasks/${task.id}/status`, {
+          status: 'DONE',
+        }).then(response => {
+          expect(response.body).to.have.property('status', 'DONE');
+        });
+      });
+  });
+
+  it('Filter Tasks', () => {
+    const task = {
+      title: faker.commerce.product(),
+      description: faker.commerce.productName(),
+    };
+    cy.request('POST', 'tasks', task).then(response => {
+      expect(response.body).to.have.any.keys(
+        'id',
+        'title',
+        'status',
+        'description',
+      );
+    });
+    cy.request('GET', 'tasks?status=OPEN').then(response => {
+      expect(response.body).to.have.lengthOf(1);
+    });
+  });
+
   it('Get Task', () => {
     cy.request('GET', '/tasks')
       .its('body')
@@ -36,18 +66,6 @@ describe('Tasks API', () => {
             'status',
             'description',
           );
-        });
-      });
-  });
-
-  it('Update Tasks', () => {
-    cy.request('GET', '/tasks')
-      .its('body')
-      .each(task => {
-        cy.request('PATCH', `/tasks/${task.id}/status`, {
-          status: 'DONE',
-        }).then(response => {
-          expect(response.body).to.have.property('status', 'DONE');
         });
       });
   });
