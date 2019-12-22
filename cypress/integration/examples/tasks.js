@@ -54,6 +54,27 @@ describe('Tasks API', () => {
     });
   });
 
+  it('Search Tasks', () => {
+    const task = {
+      title: faker.commerce.product(),
+      description: 'TEST',
+    };
+    cy.request('POST', 'tasks', task).then(response => {
+      expect(response.body).to.have.any.keys(
+        'id',
+        'title',
+        'status',
+        'description',
+      );
+    });
+    cy.request('GET', 'tasks?search=TEST').then(response => {
+      expect(response.body).to.have.lengthOf(1);
+    });
+    cy.request('GET', 'tasks?search=NOTFOUND').then(response => {
+      expect(response.body).to.have.lengthOf(0);
+    });
+  });
+
   it('Get Task', () => {
     cy.request('GET', '/tasks')
       .its('body')
