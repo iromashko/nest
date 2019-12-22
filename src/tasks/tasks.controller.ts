@@ -19,7 +19,7 @@ export class TasksController {
 
   @Get(':id')
   getTaskById(@Param('id') id: string): Task {
-    return this.getTaskById(id);
+    return this.tasksService.getTaskById(id);
   }
 
   @Post()

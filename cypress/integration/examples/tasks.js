@@ -24,7 +24,23 @@ describe('Tasks API', () => {
     });
   });
 
-  it('Delete Tasks', () => {
+  it('Get Task', () => {
+    cy.request('GET', '/tasks')
+      .its('body')
+      .each(task => {
+        const taskId = task.id;
+        cy.request('GET', `/tasks/${taskId}`).then(response => {
+          expect(response.body).to.have.any.keys(
+            'id',
+            'title',
+            'status',
+            'description',
+          );
+        });
+      });
+  });
+
+  it('Delete All Tasks', () => {
     cy.request('GET', '/tasks')
       .its('body')
       .each(task => {
