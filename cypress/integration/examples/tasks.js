@@ -7,14 +7,16 @@ describe('Tasks API', () => {
         title: faker.commerce.product(),
         description: faker.commerce.productName(),
       };
-      cy.request('POST', 'tasks', task).then(response => {
-        expect(response.body).to.have.any.keys(
-          'id',
-          'title',
-          'status',
-          'description',
-        );
-      });
+      cy.request('POST', 'tasks', task)
+        .then(response => {
+          expect(response.body).to.have.any.keys(
+            'id',
+            'title',
+            'status',
+            'description',
+          );
+        })
+        .log(`Create ${i + 1} tasks`);
     }
   });
 
