@@ -93,6 +93,21 @@ describe('Tasks API', () => {
       });
   });
 
+  it('Create Task Validation', () => {
+    const task = {
+      title: '',
+      description: '',
+    };
+    cy.request({
+      method: 'POST',
+      url: 'tasks',
+      failOnStatusCode: false,
+      body: task,
+    }).then(response => {
+      expect(response.status).to.eq(400);
+    });
+  });
+
   it('Delete All Tasks', () => {
     cy.request('GET', '/tasks')
       .its('body')
