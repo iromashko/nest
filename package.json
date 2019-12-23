@@ -24,6 +24,8 @@
     "@nestjs/core": "^6.7.2",
     "@nestjs/platform-express": "^6.7.2",
     "@types/faker": "^4.1.8",
+    "class-transformer": "^0.2.3",
+    "class-validator": "^0.11.0",
     "cypress": "^3.8.0",
     "faker": "^4.1.0",
     "reflect-metadata": "^0.1.13",

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Task, TaskStatus } from './task.model';
-import { FilterTasksDto } from './dto/filterTasksDto';
-import { CreateTaskDto } from './dto/CreateTaskDto';
-import * as uuid from 'uuid';
+import { FilterTasksDto } from './dto/filterTasks.dto';
+import { CreateTaskDto } from './dto/createTask.dto';
+import uuid = require('uuid');
 
 @Injectable()
 export class TasksService {
@@ -10,6 +10,17 @@ export class TasksService {
 
   getAllTasks(): Task[] {
     return this.tasks;
+  }
+  getTasksWithFilter(filterTaskDto: FilterTasksDto): Task[] {
+    const { status, search } = filterTaskDto;
+    let tasks = this.getAllTasks();
+    if (status) {
+      tasks = this.tasks.filter(task => task.status === status);
+    }
+    if (search) {
+      tasks = this.tasks.filter(task => task.title.includes(search) || task.description.includes(search));
+    }
+    return tasks;
   }
   createTask(createTaskDto: CreateTaskDto): Task {
     const { title, description } = createTaskDto;
@@ -25,29 +36,13 @@ export class TasksService {
   getTaskById(id: string): Task {
     return this.tasks.find(task => task.id === id);
   }
-  getTasksWithFilter(filterTasksDto: FilterTasksDto): Task[] {
-    const { status, search } = filterTasksDto;
-    let tasks = this.getAllTasks();
-    if (status) {
-      tasks = tasks.filter(task => task.status === status);
-    }
-    if (search) {
-      tasks = tasks.filter(task =>
-        task.title.includes(search) ||
-        task.description.includes(search)
-      );
-    }
-    return tasks;
-  }
-
-  deleteTaskById(id: string): Task[] {
-    this.tasks = this.tasks.filter(task => task.id !== id);
-    return this.tasks;
-  }
-  updateTaskStatus(id: string, status: TaskStatus): Task {
-    const task = this.getTaskById(id);
+  updateTask(id: string, status: TaskStatus): Task {
+    let task = this.getTaskById(id);
     task.status = status;
     return task;
   }
-
+  deleteTask(id: string) {
+    this.tasks = this.tasks.filter(task => task.id !== id);
+    return this.tasks;
+  }
 }
