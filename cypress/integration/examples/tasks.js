@@ -119,6 +119,17 @@ describe('Tasks API', () => {
     });
   });
 
+  it('Delete Task not found', () => {
+    cy.request({
+      method: 'DELETE',
+      url: '/tasks/notfound',
+      failOnStatusCode: false,
+    }).then(response => {
+      expect(response.status).to.eq(404);
+      expect(response.body.error).to.eq('Not Found');
+    });
+  });
+
   it.skip('Delete Single Task', () => {
     cy.request('GET', '/tasks').then(response => {
       expect(response.body).to.have.lengthOf(3);
