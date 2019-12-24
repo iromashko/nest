@@ -130,10 +130,14 @@ describe('Tasks API', () => {
     });
   });
 
-  it.skip('Delete Single Task', () => {
-    cy.request('GET', '/tasks').then(response => {
-      expect(response.body).to.have.lengthOf(3);
-    });
-    //TODO: delete task
+  it('Delete Single', () => {
+    cy.request('GET', '/tasks')
+      .its('body')
+      .each(task => {
+        cy.log(`delete ${task.id}`);
+        cy.request('DELETE', `/tasks/${task.id}`).then(response => {
+          expect(response.body).to.eql({ message: 'Task deleted' });
+        });
+      });
   });
 });
