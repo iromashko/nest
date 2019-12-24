@@ -31,8 +31,7 @@ export class TasksService {
     if (search) {
       tasks = tasks.filter(task => task.title.includes(search) || task.description.includes(search));
     }
-    this.tasks = tasks;
-    return this.tasks;
+    return tasks;
   }
   getTaskById(id: string): Task {
     const found = this.tasks.find(task => task.id === id);
