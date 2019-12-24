@@ -16,8 +16,24 @@ describe('Tasks API', () => {
             'description',
           );
         })
-        .log(`Create ${i + 1} tasks`);
+        .log(`Created ${i + 1} tasks`);
     }
+  });
+
+  it('Get Single Task', () => {
+    cy.request('GET', '/tasks')
+      .its('body')
+      .each(task => {
+        cy.log(`task ${task.id}`);
+        cy.request('GET', `/tasks/${task.id}`).then(response => {
+          expect(response.body).to.have.any.keys(
+            'id',
+            'title',
+            'status',
+            'description',
+          );
+        });
+      });
   });
 
   it('List All Tasks', () => {
@@ -77,22 +93,6 @@ describe('Tasks API', () => {
     });
   });
 
-  it('Get Task', () => {
-    cy.request('GET', '/tasks')
-      .its('body')
-      .each(task => {
-        const taskId = task.id;
-        cy.request('GET', `/tasks/${taskId}`).then(response => {
-          expect(response.body).to.have.any.keys(
-            'id',
-            'title',
-            'status',
-            'description',
-          );
-        });
-      });
-  });
-
   it('Create Task Validation', () => {
     const task = {
       title: '',
@@ -108,16 +108,10 @@ describe('Tasks API', () => {
     });
   });
 
-  it('Delete All Tasks', () => {
-    cy.request('GET', '/tasks')
-      .its('body')
-      .each(task => {
-        cy.request('DELETE', `/tasks/${task.id}`).then(response => {
-          cy.log('task deleted');
-        });
-      });
+  it.skip('Delete Single Task', () => {
     cy.request('GET', '/tasks').then(response => {
-      expect(response.body).to.have.lengthOf(0);
+      expect(response.body).to.have.lengthOf(3);
     });
+    //TODO: delete task
   });
 });

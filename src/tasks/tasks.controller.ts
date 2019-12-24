@@ -1,38 +1,37 @@
-import { Controller, Get, Query, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Post, Body, Get, Query, Patch, Param, Delete } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { FilterTasksDto } from './dto/filterTasks.dto';
+import { CreateTaskDto } from './dto/createTaskDto';
 import { Task, TaskStatus } from './task.model';
-import { CreateTaskDto } from './dto/createTask.dto';
+import { FilterTasksDto } from './dto/filterTasksDto';
 
 @Controller('tasks')
 export class TasksController {
-  constructor(private tasksService: TasksService) { }
+  constructor(private taskService: TasksService) { }
 
+  @Post()
+  createTask(@Body() createTaskDto: CreateTaskDto): Task {
+    return this.taskService.createTask(createTaskDto);
+  }
   @Get()
   getTasks(@Query() filterTaskDto: FilterTasksDto): Task[] {
     if (Object.keys(filterTaskDto).length) {
-      return this.tasksService.getTasksWithFilter(filterTaskDto);
+      return this.taskService.getTaskWithFilter(filterTaskDto);
     } else {
-      return this.tasksService.getAllTasks();
+      return this.taskService.getAllTasks();
     }
   }
-  @Get(':id')
-  getTaskById(@Param('id') id: string): Task {
-    return this.tasksService.getTaskById(id);
-  }
-
-  @Post()
-  @UsePipes(ValidationPipe)
-  createTask(@Body() createTaskDto: CreateTaskDto): Task {
-    return this.tasksService.createTask(createTaskDto);
-  }
-
   @Patch(":id/status")
-  updateTask(@Param("id") id: string, @Body("status") status: TaskStatus): Task {
-    return this.tasksService.updateTask(id, status);
+  updateTaskStatus(
+    @Param('id') id: string,
+    @Body('status') status: TaskStatus): Task {
+    return this.taskService.updateTaskStatus(id, status);
   }
   @Delete(":id")
-  deleteTask(@Param("id") id: string) {
-    this.tasksService.deleteTask(id);
+  deleteTask(@Param('id') id: string): Task[] {
+    return this.taskService.deleteTask(id);
+  }
+  @Get(":id")
+  getTask(@Param('id') id: string): Task {
+    return this.taskService.getTaskById(id);
   }
 }
