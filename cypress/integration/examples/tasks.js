@@ -36,6 +36,17 @@ describe('Tasks API', () => {
       });
   });
 
+  it('Task not found', () => {
+    cy.request({
+      method: 'GET',
+      url: '/tasks/notfound',
+      failOnStatusCode: false,
+    }).then(response => {
+      expect(response.status).to.eq(404);
+      expect(response.body.error).to.eq('Not Found');
+    });
+  });
+
   it('List All Tasks', () => {
     cy.request('GET', '/tasks').then(response => {
       expect(response.body).to.have.lengthOf(3);
