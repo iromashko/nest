@@ -1,40 +1,36 @@
-import { Controller, Post, Body, Get, Query, Patch, Param, Delete, ValidationPipe } from '@nestjs/common';
+import { Controller, Body, ValidationPipe, Post, Get, Query, Param, Patch, Delete } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { CreateTaskDto } from './dto/createTaskDto';
 import { Task, TaskStatus } from './task.model';
+import { CreateTaskDto } from './dto/createTaskDto';
 import { FilterTasksDto } from './dto/filterTasksDto';
-import { TaskStatusValidationPipe } from './pipes/tasksStatusValidationPipe';
+import { ValidateTaskStatusPipe } from './pipes/validateTaskStatusPipe';
 
 @Controller('tasks')
 export class TasksController {
-  constructor(private taskService: TasksService) { }
+  constructor(private tasksService: TasksService) { }
 
   @Post()
-  createTask(@Body() createTaskDto: CreateTaskDto): Task {
-    return this.taskService.createTask(createTaskDto);
+  createTask(@Body(ValidationPipe) createTaskDto: CreateTaskDto): Task {
+    return this.tasksService.createTask(createTaskDto);
   }
   @Get()
-  getTasks(@Query(ValidationPipe) filterTaskDto: FilterTasksDto): Task[] {
-    if (Object.keys(filterTaskDto).length) {
-      return this.taskService.getTaskWithFilter(filterTaskDto);
+  getTasks(@Query(ValidationPipe) filterTasksDto: FilterTasksDto): Task[] {
+    if (Object.keys(filterTasksDto).length) {
+      return this.tasksService.getTasksWithFilter(filterTasksDto);
     } else {
-      return this.taskService.getAllTasks();
+      return this.tasksService.getAllTasks();
     }
   }
-  @Patch(":id/status")
-  updateTaskStatus(
-    @Param('id') id: string,
-    @Body('status', TaskStatusValidationPipe) status: TaskStatus): Task {
-    return this.taskService.updateTaskStatus(id, status);
-  }
-
-  @Delete(":id")
-  deleteTask(@Param('id') id: string): {} {
-    return this.taskService.deleteTask(id);
-  }
-
   @Get(":id")
-  getTask(@Param('id') id: string): Task {
-    return this.taskService.getTaskById(id);
+  getTaskById(@Param("id") id: string): Task {
+    return this.tasksService.getTaskById(id);
+  }
+  @Patch(":id/status")
+  updateTaskStatus(@Param("id") id: string, @Body("status", ValidateTaskStatusPipe) status: TaskStatus): Task {
+    return this.tasksService.updateTaskStatus(id, status);
+  }
+  @Delete(":id")
+  deleteTask(@Param("id") id: string): {} {
+    return this.tasksService.deleteTaskById(id);
   }
 }

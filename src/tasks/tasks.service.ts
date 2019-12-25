@@ -22,8 +22,8 @@ export class TasksService {
   getAllTasks(): Task[] {
     return this.tasks;
   }
-  getTaskWithFilter(filterTaskDto: FilterTasksDto): Task[] {
-    const { status, search } = filterTaskDto;
+  getTasksWithFilter(filterTasksDto: FilterTasksDto): Task[] {
+    const { status, search } = filterTasksDto;
     let tasks = this.getAllTasks();
     if (status) {
       tasks = tasks.filter(task => task.status === status);
@@ -36,16 +36,18 @@ export class TasksService {
   getTaskById(id: string): Task {
     const found = this.tasks.find(task => task.id === id);
     if (!found) {
-      throw new NotFoundException(`Task with id ${id} not found.`);
+      throw new NotFoundException(`task ${id} not found`);
     }
     return found;
   }
+
   updateTaskStatus(id: string, status: TaskStatus): Task {
     let task = this.getTaskById(id);
     task.status = status;
     return task;
   }
-  deleteTask(id: string): {} {
+
+  deleteTaskById(id: string): {} {
     const found = this.getTaskById(id);
     this.tasks = this.tasks.filter(task => task.id !== found.id);
     return { message: "Task deleted" };
