@@ -3,6 +3,7 @@ import { Task, TaskStatus } from './task.model';
 import { CreateTaskDto } from './dto/createTaskDto';
 import uuid = require('uuid');
 import { FilterTasksDto } from './dto/filterTasksDto';
+import { stat } from 'fs';
 
 @Injectable()
 export class TasksService {
@@ -14,7 +15,7 @@ export class TasksService {
       id: uuid(),
       title,
       description,
-      status: TaskStatus.OPEN
+      status: TaskStatus.OPEN,
     };
     this.tasks.push(task);
     return task;
@@ -22,34 +23,36 @@ export class TasksService {
   getAllTasks(): Task[] {
     return this.tasks;
   }
-  getTasksWithFilter(filterTasksDto: FilterTasksDto): Task[] {
-    const { status, search } = filterTasksDto;
+  getTasksWithFilter(filterTaskDto: FilterTasksDto): Task[] {
+    const { search, status } = filterTaskDto;
     let tasks = this.getAllTasks();
     if (status) {
       tasks = tasks.filter(task => task.status === status);
     }
     if (search) {
-      tasks = tasks.filter(task => task.title.includes(search) || task.description.includes(search));
+      tasks = tasks.filter(
+        task =>
+          task.title.includes(search) || task.description.includes(search),
+      );
     }
+
     return tasks;
   }
   getTaskById(id: string): Task {
     const found = this.tasks.find(task => task.id === id);
     if (!found) {
-      throw new NotFoundException(`task ${id} not found`);
+      throw new NotFoundException(`${id} task not found`);
     }
     return found;
   }
-
   updateTaskStatus(id: string, status: TaskStatus): Task {
-    let task = this.getTaskById(id);
+    const task = this.getTaskById(id);
     task.status = status;
     return task;
   }
-
-  deleteTaskById(id: string): {} {
+  deleteTask(id: string): {} {
     const found = this.getTaskById(id);
     this.tasks = this.tasks.filter(task => task.id !== found.id);
-    return { message: "Task deleted" };
+    return { message: 'Task deleted' };
   }
 }

@@ -2,19 +2,21 @@ import { PipeTransform, BadRequestException } from '@nestjs/common';
 import { TaskStatus } from '../task.model';
 
 export class ValidateTaskStatusPipe implements PipeTransform {
-  readonly allowedStatuses = [
+  private allowedStatuses = [
     TaskStatus.OPEN,
     TaskStatus.IN_PROGRESS,
     TaskStatus.DONE,
   ];
   transform(value: string) {
     value = value.toUpperCase().trim();
-    if (!this.statusIsValid(value)) {
+
+    if (!this.isStatusValid(value)) {
       throw new BadRequestException(`${value} status invalid`);
     }
+
     return value;
   }
-  statusIsValid(value: any): boolean {
+  private isStatusValid(value: any): boolean {
     const idx = this.allowedStatuses.indexOf(value);
     return idx !== -1;
   }

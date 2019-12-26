@@ -5,6 +5,6 @@ import { typeOrmConfig } from './config/typeorm.config';
 
 @Module({
   providers: [],
-  imports: [TypeOrmModule.forRoot(typeOrmConfig), TasksModule],
+  imports: [TasksModule, TypeOrmModule.forRoot(typeOrmConfig)],
 })
 export class AppModule {}
