@@ -6,9 +6,12 @@ import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectRepository(User) private userRepository: UserRepository) {}
+  constructor(
+    @InjectRepository(User)
+    private userRepository: UserRepository,
+  ) {}
 
-  createUser(ACDTO: AuthCredentialsDto): Promise<void> {
+  async createUser(ACDTO: AuthCredentialsDto): Promise<void> {
     return this.userRepository.createUser(ACDTO);
   }
 }

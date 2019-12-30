@@ -34,6 +34,34 @@ describe('Auth API', () => {
       expect(response.status).to.have.eq(400);
     });
   });
+  it('Unique Username', () => {
+    cy.log('POST /auth/signup');
+    cy.log('in: password lsksjs4l53LKS');
+    cy.log('out: status 500');
+
+    cy.request({
+      url: '/auth/signup',
+      method: 'POST',
+      body: {
+        username: 'NOTUNIQUE',
+        password: 'lsksjs4l53LKS',
+      },
+      failOnStatusCode: false,
+    }).then(response => {
+      expect(response.status).to.have.eq(201);
+    });
+    cy.request({
+      url: '/auth/signup',
+      method: 'POST',
+      body: {
+        username: 'NOTUNIQUE',
+        password: 'lsksjs4l53LKS',
+      },
+      failOnStatusCode: false,
+    }).then(response => {
+      expect(response.status).to.have.eq(409);
+    });
+  });
 });
 
 describe('Tasks API', () => {
@@ -179,3 +207,7 @@ describe('Tasks API', () => {
       });
   });
 });
+
+// const crypto = require('crypto');
+// const pw = crypto.randomBytes(10).toString('hex');
+// const email = `${usr}@${usr}.com`;
