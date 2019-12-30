@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TaskModule } from './task/task.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   providers: [],
@@ -16,6 +17,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       entities: [__dirname + '/../**/*.entity.{js, ts}'],
       synchronize: true,
     }),
+    AuthModule,
   ],
   controllers: [],
 })
