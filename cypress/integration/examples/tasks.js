@@ -1,5 +1,20 @@
 const faker = require('faker');
 
+describe('Auth API', () => {
+  it('User signup', () => {
+    cy.request({
+      url: '/auth/signup',
+      method: 'POST',
+      body: {
+        username: 'TEST',
+        password: 'password',
+      },
+    }).then(response => {
+      expect(response.status).to.have.eq(201);
+    });
+  });
+});
+
 describe('Tasks API', () => {
   it('Create Task', () => {
     for (let i = 0; i < 3; i++) {
