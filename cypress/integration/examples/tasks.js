@@ -11,10 +11,27 @@ describe('Auth API', () => {
       method: 'POST',
       body: {
         username: 'TEST',
-        password: 'password',
+        password: '234j2lk34j;2k34jlLJl',
       },
     }).then(response => {
       expect(response.status).to.have.eq(201);
+    });
+  });
+  it('Weak password', () => {
+    cy.log('POST /auth/signup');
+    cy.log('in: password 123456');
+    cy.log('out: status 400');
+
+    cy.request({
+      url: '/auth/signup',
+      method: 'POST',
+      body: {
+        username: 'TEST',
+        password: '123456',
+      },
+      failOnStatusCode: false,
+    }).then(response => {
+      expect(response.status).to.have.eq(400);
     });
   });
 });
