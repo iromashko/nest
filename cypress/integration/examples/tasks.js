@@ -127,6 +127,7 @@ describe('Tasks API', () => {
       failOnStatusCode: false,
     }).then(response => {
       expect(response.status).to.eq(404);
+      expect(response.body.message).to.not.string('Cannot DELETE');
     });
   });
 
