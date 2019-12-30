@@ -2,6 +2,10 @@ const faker = require('faker');
 
 describe('Auth API', () => {
   it('User signup', () => {
+    cy.log('POST /auth/signup');
+    cy.log('in: {username, password}');
+    cy.log('out: status 201');
+
     cy.request({
       url: '/auth/signup',
       method: 'POST',
@@ -17,21 +21,22 @@ describe('Auth API', () => {
 
 describe('Tasks API', () => {
   it('Create Task', () => {
+    cy.log('POST /tasks => Task');
+    cy.log('GET 4 TASKS');
+
     for (let i = 0; i < 3; i++) {
       const task = {
         title: faker.commerce.product(),
         description: faker.commerce.productName(),
       };
-      cy.request('POST', 'tasks', task)
-        .then(response => {
-          expect(response.body).to.have.any.keys(
-            'id',
-            'title',
-            'status',
-            'description',
-          );
-        })
-        .log(`Created ${i + 1} tasks`);
+      cy.request('POST', 'tasks', task).then(response => {
+        expect(response.body).to.have.any.keys(
+          'id',
+          'title',
+          'status',
+          'description',
+        );
+      });
     }
   });
 
