@@ -11,7 +11,7 @@ describe('Auth API', () => {
       method: 'POST',
       body: {
         username: 'TEST',
-        password: '234j2lk34j;2k34jlLJl',
+        password: '563453dfgdfgdGDGF',
       },
     }).then(response => {
       expect(response.status).to.have.eq(201);
@@ -34,6 +34,25 @@ describe('Auth API', () => {
       expect(response.status).to.have.eq(400);
     });
   });
+
+  it('Invalid password', () => {
+    cy.log('POST /auth/signin');
+    cy.log('in: INVALID PASSWORD');
+    cy.log('out: status 401');
+
+    cy.request({
+      url: '/auth/signin',
+      method: 'POST',
+      body: {
+        username: 'TEST',
+        password: '563453dfgdfgdGDGFf',
+      },
+      failOnStatusCode: false,
+    }).then(response => {
+      expect(response.status).to.have.eq(401);
+    });
+  });
+
   it('Unique Username', () => {
     cy.log('POST /auth/signup');
     cy.log('in: password lsksjs4l53LKS');

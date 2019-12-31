@@ -5,10 +5,16 @@ import { AuthService } from './auth.service';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
+
   @Post('signup')
   signUpUser(
     @Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto,
   ): Promise<void> {
     return this.authService.signUpUser(authCredentialsDto);
+  }
+
+  @Post('signin')
+  signInUser(@Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto) {
+    return this.authService.signIn(authCredentialsDto);
   }
 }
