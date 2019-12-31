@@ -119,6 +119,26 @@ describe('Tasks API', () => {
       });
   });
 
+  it('Task status invalid', () => {
+    cy.log('PATCH /tasks/:id/status');
+    cy.log('in: invalid status');
+    cy.log('out: status 400');
+    cy.request('GET', '/tasks')
+      .its('body')
+      .each(task => {
+        cy.request({
+          method: 'PATCH',
+          url: `/tasks/${task.id}/status`,
+          body: {
+            status: 'INVALIDSTATUS',
+          },
+          failOnStatusCode: false,
+        }).then(response => {
+          expect(response.status).to.eq(400);
+        });
+      });
+  });
+
   it('Update Tasks', () => {
     cy.request('GET', '/tasks')
       .its('body')
