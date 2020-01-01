@@ -1,88 +1,5 @@
 const faker = require('faker');
 
-describe('Auth API', () => {
-  it('User signup', () => {
-    cy.log('POST /auth/signup');
-    cy.log('in: {username, password}');
-    cy.log('out: status 201');
-
-    cy.request({
-      url: '/auth/signup',
-      method: 'POST',
-      body: {
-        username: 'TEST',
-        password: '563453dfgdfgdGDGF',
-      },
-    }).then(response => {
-      expect(response.status).to.have.eq(201);
-    });
-  });
-  it('Weak password', () => {
-    cy.log('POST /auth/signup');
-    cy.log('in: password 123456');
-    cy.log('out: status 400');
-
-    cy.request({
-      url: '/auth/signup',
-      method: 'POST',
-      body: {
-        username: 'TEST',
-        password: '123456',
-      },
-      failOnStatusCode: false,
-    }).then(response => {
-      expect(response.status).to.have.eq(400);
-    });
-  });
-
-  it('Invalid password', () => {
-    cy.log('POST /auth/signin');
-    cy.log('in: INVALID PASSWORD');
-    cy.log('out: status 401');
-
-    cy.request({
-      url: '/auth/signin',
-      method: 'POST',
-      body: {
-        username: 'TEST',
-        password: '563453dfgdfgdGDGFf',
-      },
-      failOnStatusCode: false,
-    }).then(response => {
-      expect(response.status).to.have.eq(401);
-    });
-  });
-
-  it('Unique Username', () => {
-    cy.log('POST /auth/signup');
-    cy.log('in: password lsksjs4l53LKS');
-    cy.log('out: status 500');
-
-    cy.request({
-      url: '/auth/signup',
-      method: 'POST',
-      body: {
-        username: 'NOTUNIQUE',
-        password: 'lsksjs4l53LKS',
-      },
-      failOnStatusCode: false,
-    }).then(response => {
-      expect(response.status).to.have.eq(201);
-    });
-    cy.request({
-      url: '/auth/signup',
-      method: 'POST',
-      body: {
-        username: 'NOTUNIQUE',
-        password: 'lsksjs4l53LKS',
-      },
-      failOnStatusCode: false,
-    }).then(response => {
-      expect(response.status).to.have.eq(409);
-    });
-  });
-});
-
 describe('Tasks API', () => {
   it('Create Task', () => {
     cy.log('POST /tasks => Task');
@@ -244,6 +161,107 @@ describe('Tasks API', () => {
           expect(response.status).to.eq(200);
         });
       });
+  });
+});
+
+describe('Auth API', () => {
+  it('User signup', () => {
+    cy.log('POST /auth/signup');
+    cy.log('in: {username, password}');
+    cy.log('out: status 201');
+
+    cy.request({
+      url: '/auth/signup',
+      method: 'POST',
+      body: {
+        username: 'TEST',
+        password: '563453dfgdfgdGDGF',
+      },
+    }).then(response => {
+      expect(response.status).to.have.eq(201);
+    });
+  });
+  it('Weak password', () => {
+    cy.log('POST /auth/signup');
+    cy.log('in: password 123456');
+    cy.log('out: status 400');
+
+    cy.request({
+      url: '/auth/signup',
+      method: 'POST',
+      body: {
+        username: 'TEST',
+        password: '123456',
+      },
+      failOnStatusCode: false,
+    }).then(response => {
+      expect(response.status).to.have.eq(400);
+    });
+  });
+
+  it('Signin User', () => {
+    cy.log('POST /auth/signin');
+    cy.log('in: USER ');
+    cy.log('out: status 201');
+
+    cy.request({
+      url: '/auth/signin',
+      method: 'POST',
+      body: {
+        username: 'TEST',
+        password: '563453dfgdfgdGDGF',
+      },
+      failOnStatusCode: false,
+    }).then(response => {
+      expect(response.status).to.have.eq(201);
+    });
+  });
+
+  it('Invalid password', () => {
+    cy.log('POST /auth/signin');
+    cy.log('in: INVALID PASSWORD');
+    cy.log('out: status 401');
+
+    cy.request({
+      url: '/auth/signin',
+      method: 'POST',
+      body: {
+        username: 'TEST',
+        password: '563453dfgdfgdGDGFf',
+      },
+      failOnStatusCode: false,
+    }).then(response => {
+      expect(response.status).to.have.eq(401);
+    });
+  });
+
+  it('Unique Username', () => {
+    cy.log('POST /auth/signup');
+    cy.log('in: password lsksjs4l53LKS');
+    cy.log('out: status 500');
+
+    cy.request({
+      url: '/auth/signup',
+      method: 'POST',
+      body: {
+        username: 'NOTUNIQUE',
+        password: 'lsksjs4l53LKS',
+      },
+      failOnStatusCode: false,
+    }).then(response => {
+      expect(response.status).to.have.eq(201);
+    });
+    cy.request({
+      url: '/auth/signup',
+      method: 'POST',
+      body: {
+        username: 'NOTUNIQUE',
+        password: 'lsksjs4l53LKS',
+      },
+      failOnStatusCode: false,
+    }).then(response => {
+      expect(response.status).to.have.eq(409);
+    });
   });
 });
 
