@@ -214,6 +214,7 @@ describe('Auth API', () => {
       failOnStatusCode: false,
     }).then(response => {
       expect(response.status).to.have.eq(201);
+      expect(response.body).to.have.property('accessToken');
     });
   });
 
