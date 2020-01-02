@@ -11,12 +11,14 @@ import { PassportModule } from '@nestjs/passport';
   imports: [
     TypeOrmModule.forFeature([UserRepository]),
     JwtModule.register({
-      secret: 'topSecret53',
+      secret: 'topsecret44',
       signOptions: {
         expiresIn: 3600,
       },
     }),
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    PassportModule.register({
+      defaultStrategy: 'jwt',
+    }),
   ],
   providers: [AuthService],
 })
