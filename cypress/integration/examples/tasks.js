@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 const faker = require('faker');
-const bearer =
+let bearer =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1QzIiwiaWF0IjoxNTc4MTA1NDUwLCJleHAiOjE1NzgxMDkwNTB9.RjYljYNzlNBYpcQNxLlDwf-BNfEMc7YOP7CaB8cUnHU';
 
 describe('Auth API', () => {
@@ -58,7 +58,8 @@ describe('Auth API', () => {
     }).then(response => {
       expect(response.status).to.have.eq(201);
       expect(response.body).to.have.property('accessToken');
-      cy.log(response.body.accessToken);
+      bearer = response.body.accessToken;
+      cy.log(bearer);
     });
   });
 
