@@ -2,9 +2,12 @@
 /// <reference types="faker" />
 
 const faker = require('faker');
+
 let username = faker.internet.userName();
+let username2 = faker.internet.userName();
 let password = '563453dfgdfgdGDGF';
 let bearer = '';
+let bearer2 = '';
 
 describe('Auth API', () => {
   it('User signup', () => {
@@ -22,7 +25,19 @@ describe('Auth API', () => {
     }).then(response => {
       expect(response.status).to.have.eq(201);
     });
+
+    cy.request({
+      url: '/auth/signup',
+      method: 'POST',
+      body: {
+        username: username2,
+        password,
+      },
+    }).then(response => {
+      expect(response.status).to.have.eq(201);
+    });
   });
+
   it('Weak password', () => {
     cy.log('POST /auth/signup');
     cy.log('in: password 123456');
@@ -32,7 +47,7 @@ describe('Auth API', () => {
       url: '/auth/signup',
       method: 'POST',
       body: {
-        username: 'TEST',
+        username,
         password: '123456',
       },
       failOnStatusCode: false,
@@ -46,12 +61,13 @@ describe('Auth API', () => {
     cy.log('in: USER ');
     cy.log('out: status 201');
 
+    //user1
     cy.request({
       url: '/auth/signin',
       method: 'POST',
       body: {
-        username: 'TEST',
-        password: '563453dfgdfgdGDGF',
+        username,
+        password,
       },
       auth: {
         bearer,
@@ -62,6 +78,25 @@ describe('Auth API', () => {
       expect(response.body).to.have.property('accessToken');
       bearer = response.body.accessToken;
       cy.log(bearer);
+    });
+
+    //user 2
+    cy.request({
+      url: '/auth/signin',
+      method: 'POST',
+      body: {
+        username: username2,
+        password,
+      },
+      auth: {
+        bearer,
+      },
+      failOnStatusCode: false,
+    }).then(response => {
+      expect(response.status).to.have.eq(201);
+      expect(response.body).to.have.property('accessToken');
+      bearer2 = response.body.accessToken;
+      cy.log(bearer2);
     });
   });
 
@@ -74,8 +109,8 @@ describe('Auth API', () => {
       url: '/auth/signin',
       method: 'POST',
       body: {
-        username: 'TEST',
-        password: '563453dfgdfgdGDGFf',
+        username,
+        password: '563453dDGFf',
       },
       failOnStatusCode: false,
     }).then(response => {
@@ -103,7 +138,7 @@ describe('Auth API', () => {
 });
 
 describe('Tasks API', () => {
-  it('Create Task', () => {
+  it('Create Task User', () => {
     cy.log('POST /tasks => Task');
     cy.log('GET 4 TASKS');
 
@@ -125,6 +160,23 @@ describe('Tasks API', () => {
           'title',
           'status',
           'description',
+          'userId',
+        );
+      });
+      cy.request({
+        method: 'POST',
+        url: 'tasks',
+        body: task,
+        auth: {
+          bearer,
+        },
+      }).then(response => {
+        expect(response.body).to.have.any.keys(
+          'id',
+          'title',
+          'status',
+          'description',
+          'userId',
         );
       });
     }
@@ -145,6 +197,7 @@ describe('Tasks API', () => {
     });
   });
 
+  //TODO: list tasks
   it('List All Tasks', () => {
     cy.request({
       method: 'GET',
@@ -365,7 +418,3 @@ describe('Tasks API', () => {
       });
   });
 });
-
-// const crypto = require('crypto');
-// const pw = crypto.randomBytes(10).toString('hex');
-// const email = `${usr}@${usr}.com`;
