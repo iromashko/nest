@@ -20,6 +20,16 @@ import { JwtStrategy } from './jwt-strategy';
     PassportModule.register({
       defaultStrategy: 'jwt',
     }),
+    // TypeOrmModule.forFeature([UserRepository]),
+    // JwtModule.register({
+    //   secret: 'topsecret44',
+    //   signOptions: {
+    //     expiresIn: 3600,
+    //   },
+    // }),
+    // PassportModule.register({
+    //   defaultStrategy: 'jwt',
+    // }),
   ],
   providers: [AuthService, JwtStrategy],
   exports: [JwtStrategy, PassportModule],

@@ -1,6 +1,8 @@
 /// <reference types="cypress" />
 
 const faker = require('faker');
+const bearer =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1QzIiwiaWF0IjoxNTc4MTA1NDUwLCJleHAiOjE1NzgxMDkwNTB9.RjYljYNzlNBYpcQNxLlDwf-BNfEMc7YOP7CaB8cUnHU';
 
 describe('Auth API', () => {
   it('User signup', () => {
@@ -50,8 +52,7 @@ describe('Auth API', () => {
         password: '563453dfgdfgdGDGF',
       },
       auth: {
-        bearer:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1QyIiwiaWF0IjoxNTc4MDYxNzU0LCJleHAiOjE1NzgwNjUzNTR9.jhYCsHCEaulWrYKFEP0Psg2W8azMPtPiuI-JmC7iZCE',
+        bearer,
       },
       failOnStatusCode: false,
     }).then(response => {
@@ -124,8 +125,7 @@ describe('Tasks API', () => {
         url: 'tasks',
         body: task,
         auth: {
-          bearer:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1QyIiwiaWF0IjoxNTc4MDYxNzU0LCJleHAiOjE1NzgwNjUzNTR9.jhYCsHCEaulWrYKFEP0Psg2W8azMPtPiuI-JmC7iZCE',
+          bearer,
         },
       }).then(response => {
         expect(response.body).to.have.any.keys(
@@ -143,8 +143,7 @@ describe('Tasks API', () => {
       method: 'GET',
       url: '/tasks/34579',
       auth: {
-        bearer:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1QyIiwiaWF0IjoxNTc4MDYxNzU0LCJleHAiOjE1NzgwNjUzNTR9.jhYCsHCEaulWrYKFEP0Psg2W8azMPtPiuI-JmC7iZCE',
+        bearer,
       },
       failOnStatusCode: false,
     }).then(response => {
@@ -159,8 +158,7 @@ describe('Tasks API', () => {
       method: 'GET',
       url: '/tasks',
       auth: {
-        bearer:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1QyIiwiaWF0IjoxNTc4MDYxNzU0LCJleHAiOjE1NzgwNjUzNTR9.jhYCsHCEaulWrYKFEP0Psg2W8azMPtPiuI-JmC7iZCE',
+        bearer,
       },
     }).then(response => {
       expect(response.body).to.have.lengthOf(3);
@@ -172,8 +170,7 @@ describe('Tasks API', () => {
       method: 'GET',
       url: '/tasks',
       auth: {
-        bearer:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1QyIiwiaWF0IjoxNTc4MDYxNzU0LCJleHAiOjE1NzgwNjUzNTR9.jhYCsHCEaulWrYKFEP0Psg2W8azMPtPiuI-JmC7iZCE',
+        bearer,
       },
     })
       .its('body')
@@ -183,8 +180,7 @@ describe('Tasks API', () => {
           method: 'GET',
           url: `/tasks/${task.id}`,
           auth: {
-            bearer:
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1QyIiwiaWF0IjoxNTc4MDYxNzU0LCJleHAiOjE1NzgwNjUzNTR9.jhYCsHCEaulWrYKFEP0Psg2W8azMPtPiuI-JmC7iZCE',
+            bearer,
           },
         }).then(response => {
           expect(response.body).to.have.any.keys(
@@ -205,8 +201,7 @@ describe('Tasks API', () => {
       method: 'GET',
       url: '/tasks',
       auth: {
-        bearer:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1QyIiwiaWF0IjoxNTc4MDYxNzU0LCJleHAiOjE1NzgwNjUzNTR9.jhYCsHCEaulWrYKFEP0Psg2W8azMPtPiuI-JmC7iZCE',
+        bearer,
       },
     })
       .its('body')
@@ -218,8 +213,7 @@ describe('Tasks API', () => {
             status: 'INVALIDSTATUS',
           },
           auth: {
-            bearer:
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1QyIiwiaWF0IjoxNTc4MDYxNzU0LCJleHAiOjE1NzgwNjUzNTR9.jhYCsHCEaulWrYKFEP0Psg2W8azMPtPiuI-JmC7iZCE',
+            bearer,
           },
           failOnStatusCode: false,
         }).then(response => {
@@ -233,8 +227,7 @@ describe('Tasks API', () => {
       method: 'GET',
       url: '/tasks',
       auth: {
-        bearer:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1QyIiwiaWF0IjoxNTc4MDYxNzU0LCJleHAiOjE1NzgwNjUzNTR9.jhYCsHCEaulWrYKFEP0Psg2W8azMPtPiuI-JmC7iZCE',
+        bearer,
       },
     })
       .its('body')
@@ -243,8 +236,7 @@ describe('Tasks API', () => {
           method: 'PATCH',
           url: `/tasks/${task.id}/status`,
           auth: {
-            bearer:
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1QyIiwiaWF0IjoxNTc4MDYxNzU0LCJleHAiOjE1NzgwNjUzNTR9.jhYCsHCEaulWrYKFEP0Psg2W8azMPtPiuI-JmC7iZCE',
+            bearer,
           },
           body: {
             status: 'DONE',
@@ -265,8 +257,7 @@ describe('Tasks API', () => {
       url: 'tasks',
       body: task,
       auth: {
-        bearer:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1QyIiwiaWF0IjoxNTc4MDYxNzU0LCJleHAiOjE1NzgwNjUzNTR9.jhYCsHCEaulWrYKFEP0Psg2W8azMPtPiuI-JmC7iZCE',
+        bearer,
       },
     }).then(response => {
       expect(response.body).to.have.any.keys(
@@ -280,8 +271,7 @@ describe('Tasks API', () => {
       method: 'GET',
       url: 'tasks?status=OPEN',
       auth: {
-        bearer:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1QyIiwiaWF0IjoxNTc4MDYxNzU0LCJleHAiOjE1NzgwNjUzNTR9.jhYCsHCEaulWrYKFEP0Psg2W8azMPtPiuI-JmC7iZCE',
+        bearer,
       },
     }).then(response => {
       expect(response.body).to.have.lengthOf(1);
@@ -298,8 +288,7 @@ describe('Tasks API', () => {
       url: 'tasks',
       body: task,
       auth: {
-        bearer:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1QyIiwiaWF0IjoxNTc4MDYxNzU0LCJleHAiOjE1NzgwNjUzNTR9.jhYCsHCEaulWrYKFEP0Psg2W8azMPtPiuI-JmC7iZCE',
+        bearer,
       },
     }).then(response => {
       expect(response.body).to.have.any.keys(
@@ -313,8 +302,7 @@ describe('Tasks API', () => {
       method: 'GET',
       url: 'tasks?search=TEST',
       auth: {
-        bearer:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1QyIiwiaWF0IjoxNTc4MDYxNzU0LCJleHAiOjE1NzgwNjUzNTR9.jhYCsHCEaulWrYKFEP0Psg2W8azMPtPiuI-JmC7iZCE',
+        bearer,
       },
     }).then(response => {
       expect(response.body).to.have.lengthOf(1);
@@ -323,8 +311,7 @@ describe('Tasks API', () => {
       method: 'GET',
       url: 'tasks?search=NOTFOUND',
       auth: {
-        bearer:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1QyIiwiaWF0IjoxNTc4MDYxNzU0LCJleHAiOjE1NzgwNjUzNTR9.jhYCsHCEaulWrYKFEP0Psg2W8azMPtPiuI-JmC7iZCE',
+        bearer,
       },
     }).then(response => {
       expect(response.body).to.have.lengthOf(0);
@@ -342,8 +329,7 @@ describe('Tasks API', () => {
       failOnStatusCode: false,
       body: task,
       auth: {
-        bearer:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1QyIiwiaWF0IjoxNTc4MDYxNzU0LCJleHAiOjE1NzgwNjUzNTR9.jhYCsHCEaulWrYKFEP0Psg2W8azMPtPiuI-JmC7iZCE',
+        bearer,
       },
     }).then(response => {
       expect(response.status).to.eq(400);
@@ -355,8 +341,7 @@ describe('Tasks API', () => {
       method: 'DELETE',
       url: '/tasks/93874',
       auth: {
-        bearer:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1QyIiwiaWF0IjoxNTc4MDYxNzU0LCJleHAiOjE1NzgwNjUzNTR9.jhYCsHCEaulWrYKFEP0Psg2W8azMPtPiuI-JmC7iZCE',
+        bearer,
       },
       failOnStatusCode: false,
     }).then(response => {
@@ -370,8 +355,7 @@ describe('Tasks API', () => {
       method: 'GET',
       url: '/tasks',
       auth: {
-        bearer:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1QyIiwiaWF0IjoxNTc4MDYxNzU0LCJleHAiOjE1NzgwNjUzNTR9.jhYCsHCEaulWrYKFEP0Psg2W8azMPtPiuI-JmC7iZCE',
+        bearer,
       },
     })
       .its('body')
@@ -381,8 +365,7 @@ describe('Tasks API', () => {
           method: 'DELETE',
           url: `/tasks/${task.id}`,
           auth: {
-            bearer:
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1QyIiwiaWF0IjoxNTc4MDYxNzU0LCJleHAiOjE1NzgwNjUzNTR9.jhYCsHCEaulWrYKFEP0Psg2W8azMPtPiuI-JmC7iZCE',
+            bearer,
           },
         }).then(response => {
           expect(response.status).to.eq(200);

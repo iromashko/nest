@@ -23,10 +23,24 @@ export class AuthService {
       authCredentialsDto,
     );
     if (!username) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException();
     }
     const payload: JwtPayload = { username };
     const accessToken = this.jwtService.sign(payload);
     return { accessToken };
   }
+
+  // async signInUser(
+  //   authCredentialsDto: AuthCredentialsDto,
+  // ): Promise<{ accessToken: string }> {
+  //   const username = await this.userRepository.validateUserPassword(
+  //     authCredentialsDto,
+  //   );
+  //   if (!username) {
+  //     throw new UnauthorizedException('Invalid credentials');
+  //   }
+  //   const payload: JwtPayload = { username };
+  //   const accessToken = this.jwtService.sign(payload);
+  //   return { accessToken };
+  // }
 }
