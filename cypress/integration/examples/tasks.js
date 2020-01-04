@@ -1,8 +1,10 @@
 /// <reference types="cypress" />
+/// <reference types="faker" />
 
 const faker = require('faker');
-let bearer =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRFU1QzIiwiaWF0IjoxNTc4MTA1NDUwLCJleHAiOjE1NzgxMDkwNTB9.RjYljYNzlNBYpcQNxLlDwf-BNfEMc7YOP7CaB8cUnHU';
+let username = faker.internet.userName();
+let password = '563453dfgdfgdGDGF';
+let bearer = '';
 
 describe('Auth API', () => {
   it('User signup', () => {
@@ -14,8 +16,8 @@ describe('Auth API', () => {
       url: '/auth/signup',
       method: 'POST',
       body: {
-        username: 'TEST',
-        password: '563453dfgdfgdGDGF',
+        username,
+        password,
       },
     }).then(response => {
       expect(response.status).to.have.eq(201);
@@ -90,19 +92,8 @@ describe('Auth API', () => {
       url: '/auth/signup',
       method: 'POST',
       body: {
-        username: 'NOTUNIQUE',
-        password: 'lsksjs4l53LKS',
-      },
-      failOnStatusCode: false,
-    }).then(response => {
-      expect(response.status).to.have.eq(201);
-    });
-    cy.request({
-      url: '/auth/signup',
-      method: 'POST',
-      body: {
-        username: 'NOTUNIQUE',
-        password: 'lsksjs4l53LKS',
+        username,
+        password,
       },
       failOnStatusCode: false,
     }).then(response => {
