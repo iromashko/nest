@@ -197,7 +197,6 @@ describe('Tasks API', () => {
     });
   });
 
-  //TODO: list tasks
   it('List All Tasks', () => {
     cy.request({
       method: 'GET',
@@ -206,7 +205,12 @@ describe('Tasks API', () => {
         bearer,
       },
     }).then(response => {
-      expect(response.body).to.have.lengthOf(3);
+      const userId = response.body[0].userId;
+      const tasks = response.body;
+      expect(response.body.length).to.be.at.least(3);
+      cy.get(tasks).each(task => {
+        expect(task.userId).to.equal(userId);
+      });
     });
   });
 
@@ -310,6 +314,7 @@ describe('Tasks API', () => {
         'title',
         'status',
         'description',
+        'userId',
       );
     });
     cy.request({
@@ -319,7 +324,7 @@ describe('Tasks API', () => {
         bearer,
       },
     }).then(response => {
-      expect(response.body).to.have.lengthOf(1);
+      expect(response.body.length).to.be.at.least(1);
     });
   });
 
@@ -341,6 +346,7 @@ describe('Tasks API', () => {
         'title',
         'status',
         'description',
+        'userId',
       );
     });
     cy.request({
@@ -350,7 +356,7 @@ describe('Tasks API', () => {
         bearer,
       },
     }).then(response => {
-      expect(response.body).to.have.lengthOf(1);
+      expect(response.body.length).to.be.at.least(1);
     });
     cy.request({
       method: 'GET',
