@@ -7,7 +7,6 @@ export class ValidateTaskStatus implements PipeTransform {
     TaskStatus.IN_PROGRESS,
     TaskStatus.DONE,
   ];
-
   transform(value: any) {
     value = value.toUpperCase().trim();
     if (!this.isStatusValid(value)) {
@@ -15,7 +14,6 @@ export class ValidateTaskStatus implements PipeTransform {
     }
     return value;
   }
-
   private isStatusValid(value: any): boolean {
     const idx = this.allowedStatuses.indexOf(value);
     return idx !== -1;
