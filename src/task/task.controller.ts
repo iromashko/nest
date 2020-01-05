@@ -11,6 +11,7 @@ import {
   ParseIntPipe,
   Patch,
   Delete,
+  Logger,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -25,6 +26,7 @@ import { ValidateTaskStatus } from './pipes/validate-task-status.pipe';
 @Controller('tasks')
 @UseGuards(AuthGuard())
 export class TaskController {
+  private logger = new Logger('task controller');
   constructor(private taskService: TaskService) {}
 
   @Post()
@@ -33,6 +35,11 @@ export class TaskController {
     @Body() createTaskDto: CreateTaskDto,
     @GetUser() user: User,
   ): Promise<Task> {
+    this.logger.verbose(
+      `User "${user.username}" creating new task. Data: ${JSON.stringify(
+        createTaskDto,
+      )}`,
+    );
     return this.taskService.createTask(createTaskDto, user);
   }
 
@@ -41,6 +48,11 @@ export class TaskController {
     @Query(ValidationPipe) filterTasksDto: FilterTasksDto,
     @GetUser() user: User,
   ): Promise<Task[]> {
+    this.logger.verbose(
+      `User "${user.username}" retrieving all tasks. Filters: ${JSON.stringify(
+        filterTasksDto,
+      )}`,
+    );
     return this.taskService.getTasks(filterTasksDto, user);
   }
 
