@@ -138,7 +138,7 @@ describe('Auth API', () => {
 });
 
 describe('Tasks API', () => {
-  it('Create Task User', () => {
+  it('Create Task', () => {
     cy.log('POST /tasks => Task');
     cy.log('GET 4 TASKS');
 
@@ -178,23 +178,9 @@ describe('Tasks API', () => {
           'description',
           'userId',
         );
+        expect(response.body).to.not.have.keys('user');
       });
     }
-  });
-
-  it('Task not found', () => {
-    cy.request({
-      method: 'GET',
-      url: '/tasks/34579',
-      auth: {
-        bearer,
-      },
-      failOnStatusCode: false,
-    }).then(response => {
-      expect(response.status).to.eq(404);
-      expect(response.body.error).to.eq('Not Found');
-      expect(response.body.message).to.not.string('Cannot GET');
-    });
   });
 
   it('List All Tasks', () => {
@@ -240,6 +226,21 @@ describe('Tasks API', () => {
           );
         });
       });
+  });
+
+  it('Task not found', () => {
+    cy.request({
+      method: 'GET',
+      url: '/tasks/34579',
+      auth: {
+        bearer,
+      },
+      failOnStatusCode: false,
+    }).then(response => {
+      expect(response.status).to.eq(404);
+      expect(response.body.error).to.eq('Not Found');
+      expect(response.body).to.not.have.keys('message');
+    });
   });
 
   it('Task status invalid', () => {

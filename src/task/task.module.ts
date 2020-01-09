@@ -7,12 +7,12 @@ import { PassportModule } from '@nestjs/passport';
 
 @Module({
   controllers: [TaskController],
+  providers: [TaskService],
   imports: [
     TypeOrmModule.forFeature([TaskRepository]),
     PassportModule.register({
       defaultStrategy: 'jwt',
     }),
   ],
-  providers: [TaskService],
 })
 export class TaskModule {}
