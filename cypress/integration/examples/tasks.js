@@ -182,6 +182,23 @@ describe('Tasks API', () => {
       });
     }
   });
+  it('Create Task Validation', () => {
+    const task = {
+      title: '',
+      description: '',
+    };
+    cy.request({
+      method: 'POST',
+      url: 'tasks',
+      failOnStatusCode: false,
+      body: task,
+      auth: {
+        bearer,
+      },
+    }).then(response => {
+      expect(response.status).to.eq(400);
+    });
+  });
 
   it('List All Tasks', () => {
     cy.request({
@@ -197,6 +214,78 @@ describe('Tasks API', () => {
       cy.get(tasks).each(task => {
         expect(task.userId).to.equal(userId);
       });
+    });
+  });
+  it('Filter Tasks', () => {
+    const task = {
+      title: faker.commerce.product(),
+      description: faker.commerce.productName(),
+    };
+    cy.request({
+      method: 'POST',
+      url: 'tasks',
+      body: task,
+      auth: {
+        bearer,
+      },
+    }).then(response => {
+      expect(response.body).to.have.any.keys(
+        'id',
+        'title',
+        'status',
+        'description',
+        'userId',
+      );
+    });
+    cy.request({
+      method: 'GET',
+      url: 'tasks?status=OPEN',
+      auth: {
+        bearer,
+      },
+    }).then(response => {
+      expect(response.body.length).to.be.at.least(1);
+    });
+  });
+
+  it('Search Tasks', () => {
+    const task = {
+      title: faker.commerce.product(),
+      description: 'TEST',
+    };
+    cy.request({
+      method: 'POST',
+      url: 'tasks',
+      body: task,
+      auth: {
+        bearer,
+      },
+    }).then(response => {
+      expect(response.body).to.have.any.keys(
+        'id',
+        'title',
+        'status',
+        'description',
+        'userId',
+      );
+    });
+    cy.request({
+      method: 'GET',
+      url: 'tasks?search=TEST',
+      auth: {
+        bearer,
+      },
+    }).then(response => {
+      expect(response.body.length).to.be.at.least(1);
+    });
+    cy.request({
+      method: 'GET',
+      url: 'tasks?search=NOTFOUND',
+      auth: {
+        bearer,
+      },
+    }).then(response => {
+      expect(response.body).to.have.lengthOf(0);
     });
   });
 
@@ -295,97 +384,6 @@ describe('Tasks API', () => {
           expect(response.body).to.have.property('status', 'DONE');
         });
       });
-  });
-
-  it('Filter Tasks', () => {
-    const task = {
-      title: faker.commerce.product(),
-      description: faker.commerce.productName(),
-    };
-    cy.request({
-      method: 'POST',
-      url: 'tasks',
-      body: task,
-      auth: {
-        bearer,
-      },
-    }).then(response => {
-      expect(response.body).to.have.any.keys(
-        'id',
-        'title',
-        'status',
-        'description',
-        'userId',
-      );
-    });
-    cy.request({
-      method: 'GET',
-      url: 'tasks?status=OPEN',
-      auth: {
-        bearer,
-      },
-    }).then(response => {
-      expect(response.body.length).to.be.at.least(1);
-    });
-  });
-
-  it('Search Tasks', () => {
-    const task = {
-      title: faker.commerce.product(),
-      description: 'TEST',
-    };
-    cy.request({
-      method: 'POST',
-      url: 'tasks',
-      body: task,
-      auth: {
-        bearer,
-      },
-    }).then(response => {
-      expect(response.body).to.have.any.keys(
-        'id',
-        'title',
-        'status',
-        'description',
-        'userId',
-      );
-    });
-    cy.request({
-      method: 'GET',
-      url: 'tasks?search=TEST',
-      auth: {
-        bearer,
-      },
-    }).then(response => {
-      expect(response.body.length).to.be.at.least(1);
-    });
-    cy.request({
-      method: 'GET',
-      url: 'tasks?search=NOTFOUND',
-      auth: {
-        bearer,
-      },
-    }).then(response => {
-      expect(response.body).to.have.lengthOf(0);
-    });
-  });
-
-  it('Create Task Validation', () => {
-    const task = {
-      title: '',
-      description: '',
-    };
-    cy.request({
-      method: 'POST',
-      url: 'tasks',
-      failOnStatusCode: false,
-      body: task,
-      auth: {
-        bearer,
-      },
-    }).then(response => {
-      expect(response.status).to.eq(400);
-    });
   });
 
   it('Delete Task not found', () => {

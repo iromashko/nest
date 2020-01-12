@@ -1,8 +1,9 @@
 import {
   Controller,
+  UseGuards,
   Post,
   Body,
-  UseGuards,
+  UsePipes,
   ValidationPipe,
   Get,
   Query,
@@ -10,17 +11,17 @@ import {
   ParseIntPipe,
   Patch,
   Delete,
-  UsePipes,
 } from '@nestjs/common';
-import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskService } from './task.service';
-import { Task } from './task.entity';
 import { AuthGuard } from '@nestjs/passport';
+import { CreateTaskDto } from './dto/create-task.dto';
+import { Task } from './task.entity';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from 'src/auth/user.entity';
 import { FilterTasksDto } from './dto/filter-task.dto';
-import { ValidateTaskStatus } from './pipes/validate-task-status.pipe';
+import { identity } from 'rxjs';
 import { TaskStatus } from './task-status.enum';
+import { ValidateTaskStatus } from './pipes/validate-task-status.pipe';
 
 @Controller('tasks')
 @UseGuards(AuthGuard())
