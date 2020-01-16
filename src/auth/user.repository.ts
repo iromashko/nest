@@ -21,7 +21,7 @@ export class UserRepository extends Repository<User> {
       if (error.code === '23505') {
         throw new ConflictException('User already exists');
       } else {
-        throw new InternalServerErrorException('Server error');
+        throw new InternalServerErrorException('Server Error');
       }
     }
   }

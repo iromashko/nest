@@ -1,7 +1,7 @@
 import {
   BaseEntity,
-  Entity,
   PrimaryGeneratedColumn,
+  Entity,
   Column,
   ManyToOne,
 } from 'typeorm';
