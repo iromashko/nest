@@ -12,7 +12,6 @@ import {
   Patch,
   Delete,
 } from '@nestjs/common';
-import { TaskRepository } from './task.repository';
 import { AuthGuard } from '@nestjs/passport';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';

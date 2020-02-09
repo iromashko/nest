@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { TaskModule } from './task/task.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   providers: [],
@@ -17,6 +19,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       database: 'taskmanagement',
       entities: [__dirname + '/../**/*.entity.{js, ts}'],
       synchronize: true,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client'),
     }),
   ],
   controllers: [],
