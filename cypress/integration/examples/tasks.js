@@ -328,7 +328,7 @@ describe('Tasks API', () => {
     }).then(response => {
       expect(response.status).to.eq(404);
       expect(response.body.error).to.eq('Not Found');
-      expect(response.body).to.not.have.keys('message');
+      expect(response.body).to.not.have.property('message');
     });
   });
 
